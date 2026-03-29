@@ -1,29 +1,24 @@
-from datetime import datetime
 from tools.base_tool import BaseTool
+from datetime import datetime
+import pytz
 
 
 class TimeTool(BaseTool):
-    """
-    A tool to get the current system time.
-    """
 
     def execute(self):
-        """
-        Returns the current time.
+        try:
+            riga_tz = pytz.timezone("Europe/Riga")
+            current_time = datetime.now(riga_tz)
 
-        Returns:
-            str: Current time in readable format
-        """
-        now = datetime.now()
-        return now.strftime("%Y-%m-%d %H:%M:%S")
+            return current_time.strftime("%Y-%m-%d %H:%M:%S")
+
+        except Exception as e:
+            return f"Time error: {str(e)}"
 
     def get_declaration(self) -> dict:
-        """
-        Returns schema for Gemini function calling.
-        """
         return {
             "name": "get_time",
-            "description": "Get the current system time",
+            "description": "Get current time in Riga",
             "parameters": {
                 "type": "object",
                 "properties": {}
